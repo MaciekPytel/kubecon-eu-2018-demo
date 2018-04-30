@@ -22,8 +22,8 @@ spec:
         image: directxman12/k8s-prometheus-adapter:advanced-config
         args:
         - --secure-port=6443
-        - --tls-cert-file=/var/run/serving-cert/serving.crt
-        - --tls-private-key-file=/var/run/serving-cert/serving.key
+        - --tls-cert-file=/var/run/serving-cert/tls.crt
+        - --tls-private-key-file=/var/run/serving-cert/tls.key
         - --logtostderr=true
         - --prometheus-url=http://prometheus.prom.svc:9090/
         - --config=/etc/k8s-prometheus-adapter/config.yaml
@@ -35,7 +35,7 @@ spec:
         - mountPath: /var/run/serving-cert
           name: volume-serving-cert
           readOnly: true
-        - mountPath: /etc/k8s-prometheus-adapter/config.yaml
+        - mountPath: /etc/k8s-prometheus-adapter
           name: config
           readOnly: true
       volumes:
