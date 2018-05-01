@@ -80,7 +80,7 @@ kind: ServiceMonitor
 metadata:
   name: fake-loadbalancer
   labels:
-    service-monitor: fake-loadbalancer
+    service-monitor: sample-server
 spec:
   selector:
     matchLabels:

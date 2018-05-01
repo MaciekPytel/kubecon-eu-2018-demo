@@ -1,3 +1,36 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: deployment-reader
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - deployments
+  - pods
+  verbs:
+  - get
+  - list
+---
+kind: ServiceAccount
+apiVersion: v1
+metadata:
+  name: sample-server
+  namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: sample-server-binding
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: deployment-reader
+subjects:
+- kind: ServiceAccount
+  name: sample-server
+  namespace: default
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -14,14 +47,22 @@ spec:
       labels:
         app: sample-server
     spec:
+      serviceAccountName: sample-server
       containers:
       - image: gcr.io/maciekpytel-dev-playground/server:0.0.2
         command:
         - /bin/sh
         - -c
         - ./server
-        - --
+        - --deployment-name=sample-server
+        - --pod-namespace=$(POD_NAMESPACE)
+        - --request-duration=100m
         name: sample-server
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
         ports:
         - name: web
           containerPort: 1234

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: load
+  name: load
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: load
+  template:
+    metadata:
+      labels:
+        app: load
+    spec:
+      containers:
+      - image: radial/busyboxplus:curl
+        command:
+        - /bin/sh
+        - -c
+        - 'while true; do curl fake-loadbalancer.default.svc.cluster.local/app -H "Host: sample-server.default.balance.local"; done'
+        name: load
+        resources:
+          requests:
+            cpu: "100m"
+          limits:
+            cpu: "100m"

@@ -12,11 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM golang:1.9.3
-ADD . /go/src/server
-RUN CGO_ENABLED=0 GOOS=linux go install server
-
-FROM alpine:latest
-RUN apk -U add ca-certificates
-COPY --from=0 /go/bin/server .
-
+FROM ubuntu
+COPY server /server
