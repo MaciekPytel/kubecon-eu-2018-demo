@@ -1,7 +1,7 @@
 apiVersion: autoscaling/v2beta1
 kind: HorizontalPodAutoscaler
 metadata:
-  name: test
+  name: sample-server
   namespace: default
 spec:
   minReplicas: 1
@@ -14,5 +14,4 @@ spec:
   scaleTargetRef:
     apiVersion: extensions/v1beta1
     kind: Deployment
-    name: test
-
+    name: sample-server
