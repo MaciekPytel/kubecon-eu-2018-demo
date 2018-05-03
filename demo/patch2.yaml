@@ -1,0 +1,19 @@
+spec:
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      targetAverageUtilization: 60
+  - type: Pods
+    pods:
+      metricName: http_requests
+      targetAverageValue: 1
+  - type: Object
+    object:
+      metricName: balancer_request_latency
+      target:
+        apiVersion: v1
+        kind: Service
+        name: sample-server
+      targetValue: 10m
+
